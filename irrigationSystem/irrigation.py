@@ -1,6 +1,6 @@
 import random 
 daysOfWeek = ["Sun","Mon","Tue","Wed","Thur","Fri","Sat"]
-seasons = ["summer","winter","fall","spring"]
+seasons = ["spring","summer","autumn","winter"]
 
 watered_days = []
 
@@ -31,7 +31,7 @@ def rainChance(season):
     else :
         return none
 
-def rainSeason(seasons):
+def randomSeason(seasons):
     return(random.choice(seasons))
 
 def weekWaterUse():
@@ -43,9 +43,6 @@ def weekWaterUse():
 
 
 def dayIntro(day):
-    season = rainSeason(seasons)
-    #day = daysOfWeek[0]
-    chanceOfRain = rainChance(season)
     print("--------------------------------------------")
     print("--Welcome To Your Irrigation System--")
 
@@ -80,18 +77,38 @@ def waterCounter(watered):
             maxWater += regWaterUsage()
             boo += 1
     return boo
+
+def seasonProgress(season,seasonDayCount,seasons):
+    seasonNumber = 5
+    if season == "spring":
+        seasonNumber = 0
+    elif season == "summer":
+        seasonNumber = 1
+    elif season == "autumn":
+        seasonNumber = 2
+    elif season == "winter":
+        seasonNumber = 3
+    else:
+        seasonNumber = 0
     
+    if seasonDayCount >= 10:
+        season = seasons[(seasonNumber + 1) % len(seasons)]
+        seasonDayCount = 0
+    return season,seasonDayCount
 
 
 
 
 if __name__ == "__main__":
+    seasonDayCount = 0
     dayCount = 0
     day = daysOfWeek[0]
+    season = randomSeason(seasons)
     watered = 0
 
     ###create a loop to run the app 
     while True:
+        season, seasonDayCount = seasonProgress(season,seasonDayCount,seasons)
         dayIntro(day)
         watered = waterCounter(watered)
         dayCount += 1 
@@ -104,4 +121,6 @@ if __name__ == "__main__":
         stop = input("Do u wanna stop?(Yes/No)").lower()
         if stop == "yes":
             break
+        else:
+            seasonDayCount += 5
 
